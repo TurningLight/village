@@ -12,6 +12,7 @@ dist/
 dist-ssr/
 *.local
 *.local.json
+*.local.*
 
 # Local requirement material; do not publish with the application
 /需求/
@@ -76,6 +77,21 @@ tmp/
 temp/
 *.tmp
 *.bak
+# Local working files, generated previews, backups, and browser captures
+/work/
+/outputs/
+/backups/
+*.har
+*.heapsnapshot
+*.cpuprofile
+*.pid
+.history/
+# Root-level exported bundles; keep versioned test fixtures and vendor assets
+/*.zip
+/*.7z
+/*.tar
+/*.tar.gz
+/*.tgz
 
 # Editor directories and files
 .vscode/*
@@ -98,3 +114,11 @@ Desktop.ini
 *.sqlite3
 *.sqlite-wal
 *.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite-journal
+*.sqlite3-journal
+*.db
+*.db-wal
+*.db-shm
+*.db-journal

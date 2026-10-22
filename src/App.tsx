@@ -15,7 +15,8 @@ import {
   Plus,
   RotateCcw,
   Sun,
-  Wrench,
+  Settings2,
+  CloudCheck,
 } from 'lucide-react';
 import Header from './components/layout/Header';
 import StatsCards from './components/layout/StatsCards';
@@ -23,29 +24,20 @@ import ModelUpload from './components/scene3d/ModelUpload';
 import GovernancePanel from './components/governance/GovernancePanel';
 import type { VillageSceneHandle } from './components/scene3d/VillageScene';
 import type { PickedLocation } from './components/issues/IssuePanel';
-import type { Vector3D } from './types';
 import { useLocalMap } from './lib/useLocalMap';
-import { DEMO_MODEL_ID } from './lib/issues';
 import { useModelProjection } from './lib/useModelProjection';
 import { usePublishMap } from './lib/usePublishMap';
 import { connectSharedIssueSync } from './services/sharedIssueSync';
 import { useAppStore } from './store/useAppStore';
+import { useShallow } from 'zustand/react/shallow';
 import { connectDesktopMarkerStorage, useDesktopMarkerStore } from './store/useDesktopMarkerStore';
 import './index.css';
 import './workspace.css';
-const DemoScene = lazy(() => import('./components/scene3d/DemoScene'));
 const RealScene = lazy(() => import('./components/scene3d/VillageScene'));
 const VillageMap = lazy(() => import('./components/map/VillageMap'));
 const GovernanceTerminal = lazy(
   () => import('./components/governance-terminal/GovernanceTerminal'),
 );
-function readScenePreference() {
-  try {
-    return localStorage.getItem('village-scene-mode') === 'demo';
-  } catch {
-    return false;
-  }
-}
 /** Do not load a hidden 3D viewer when opening an already saved 2D map.
  * Once needed, keep it mounted so switching views preserves its camera. */
 function SceneMount({ needed, children }: { needed: boolean; children: ReactNode }) {
@@ -59,16 +51,32 @@ function App() {
   const page = location.pathname === '/governance' ? 'governance' : 'workspace';
   const scene = useRef<VillageSceneHandle>(null),
     map = useLocalMap(),
-    s = useAppStore();
-  const [demo, setDemo] = useState(readScenePreference),
-    [uploadOpen, setUploadOpen] = useState(false),
+    s = useAppStore(
+      useShallow((state) => ({
+        village: state.village,
+        selectedBuildingId: state.selectedBuildingId,
+        selectedIssueId: state.selectedIssueId,
+        selectBuilding: state.selectBuilding,
+        selectIssue: state.selectIssue,
+        setCurrentRenovation: state.setCurrentRenovation,
+        setTimeMode: state.setTimeMode,
+        setViewMode: state.setViewMode,
+        showBuildings: state.showBuildings,
+        showIssues: state.showIssues,
+        timeMode: state.timeMode,
+        toggleBuildings: state.toggleBuildings,
+        toggleIssues: state.toggleIssues,
+        viewMode: state.viewMode,
+      })),
+    );
+  const demo = false;
+  const [uploadOpen, setUploadOpen] = useState(false),
     [panelOpen, setPanelOpen] = useState(false),
-    [tab, setTab] = useState<'issues' | 'plans'>('issues'),
     [picking, setPicking] = useState(false),
     [draft, setDraft] = useState<PickedLocation | null>(null),
     [notice, setNotice] = useState(''),
     [mini, setMini] = useState(true);
-  const modelId = demo ? DEMO_MODEL_ID : map.activeId;
+  const modelId = map.activeId;
   const reloadScene = useCallback(() => scene.current?.reload?.(), []);
   const projection = useModelProjection(
     modelId,
@@ -78,7 +86,7 @@ function App() {
   );
   const sharedMap = usePublishMap({
     modelId,
-    name: demo ? '青禾村 Demo' : map.activeName,
+    name: map.activeName,
     demo,
     restoring: !demo && (map.restoring || !!map.restoreError),
     projection: projection.view,
@@ -91,7 +99,7 @@ function App() {
     if (issue) useDesktopMarkerStore.getState().acknowledgeViewedIssue(issue);
   }, [page, s.selectedIssueId, s.village]);
   useEffect(() => {
-    document.title = `乡居共治 · ${page === 'governance' ? '智慧治理终端' : '可视化事件处理工作台'}`;
+    document.title = `乡见 · ${page === 'governance' ? '智慧治理终端' : '可视化事件处理工作台'}`;
   }, [page]);
   useEffect(() => {
     // Each visit opens the three-dimensional village with the two-dimensional
@@ -103,30 +111,8 @@ function App() {
     const t = setTimeout(() => setNotice(''), 4500);
     return () => clearTimeout(t);
   }, [notice]);
-  const opened =
-    panelOpen || !!s.selectedIssueId || !!s.selectedBuildingId || !!s.currentRenovationId;
-  const panelTab = s.currentRenovationId
-    ? 'plans'
-    : s.selectedIssueId || s.selectedBuildingId
-      ? 'issues'
-      : tab;
-  const chooseScene = (next: boolean) => {
-    if (draft) {
-      setNotice('请先保存或取消正在录入的事件。');
-      return;
-    }
-    setDemo(next);
-    setPicking(false);
-    s.selectIssue(null);
-    s.selectBuilding(null);
-    s.setCurrentRenovation(null);
-    s.setRenovationMode('before');
-    try {
-      localStorage.setItem('village-scene-mode', next ? 'demo' : 'real');
-    } catch {
-      setNotice('场景选择无法保存，本次仍可正常使用。');
-    }
-  };
+  const opened = panelOpen || !!s.selectedIssueId || !!s.selectedBuildingId;
+  const panelTab = 'issues';
   const acceptDraft = useCallback((picked: PickedLocation) => {
     setDraft((previous) => {
       if (previous) return previous;
@@ -134,16 +120,11 @@ function App() {
     });
     setPicking(false);
     setPanelOpen(true);
-    setTab('issues');
     const state = useAppStore.getState();
     state.selectIssue(null);
     state.selectBuilding(null);
     state.setCurrentRenovation(null);
   }, []);
-  const pick = useCallback(
-    (p: Vector3D) => acceptDraft({ modelId: DEMO_MODEL_ID, position: [p.x, p.y, p.z], local: p }),
-    [acceptDraft],
-  );
   const create = () => {
     if (!s.showBuildings) s.toggleBuildings();
     if (draft) return;
@@ -161,7 +142,7 @@ function App() {
   return (
     <div className={`village-app workspace-app ${s.timeMode === 'night' ? 'workspace-night' : ''}`}>
       <Header
-        modelName={demo ? '青禾村 Demo' : map.activeName}
+        modelName={map.activeName}
         demo={demo}
         online={!demo && map.selection.type === 'sketchfab'}
         page={page}
@@ -234,31 +215,6 @@ function App() {
                   <input type="checkbox" checked={s.showIssues} onChange={s.toggleIssues} />
                   治理事件
                 </label>
-                {demo &&
-                  (['roads', 'fields', 'water', 'facilities'] as const).map((key) => (
-                    <label key={key}>
-                      <input
-                        type="checkbox"
-                        checked={s.layers[key]}
-                        onChange={() => s.toggleLayer(key)}
-                      />
-                      {
-                        { roads: '道路', fields: '农田', water: '水域', facilities: '公共设施' }[
-                          key
-                        ]
-                      }
-                    </label>
-                  ))}
-                {demo && (
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={s.showRenovations}
-                      onChange={s.toggleRenovations}
-                    />
-                    微更新方案
-                  </label>
-                )}
                 {s.viewMode === '3d' && (
                   <label>
                     <input type="checkbox" checked={mini} onChange={() => setMini((v) => !v)} />
@@ -278,31 +234,11 @@ function App() {
                 }
                 const next = !(opened && panelTab === 'issues');
                 s.selectIssue(null);
-                setTab('issues');
                 setPanelOpen(next);
               }}
             >
               <ClipboardList size={16} />
               <span>治理事件</span>
-            </button>
-            <button
-              aria-label="微更新方案"
-              className={opened && panelTab === 'plans' ? 'active' : ''}
-              onClick={() => {
-                if (draft) {
-                  setNotice('请先保存或取消当前事件。');
-                  return;
-                }
-                setTab('plans');
-                setPanelOpen(true);
-                s.selectIssue(null);
-                s.selectBuilding(null);
-                if (!s.showRenovations) s.toggleRenovations();
-                if (s.viewMode === '2d') s.setViewMode('split');
-              }}
-            >
-              <Wrench size={16} />
-              <span>微更新</span>
             </button>
             <button aria-label="新增事件" className="new-event-button" onClick={create}>
               <Plus size={16} />
@@ -313,18 +249,7 @@ function App() {
             <div className={`spatial-workspace view-${s.viewMode}`}>
               <div className="scene-source">
                 <span className="source-label">当前场景</span>
-                <button
-                  className={demo ? 'active' : ''}
-                  aria-pressed={demo}
-                  onClick={() => chooseScene(true)}
-                >
-                  青禾村 Demo
-                </button>
-                <button
-                  className={!demo ? 'active' : ''}
-                  aria-pressed={!demo}
-                  onClick={() => chooseScene(false)}
-                >
+                <button className="active" aria-pressed={true}>
                   实景模型
                 </button>
                 <button
@@ -334,23 +259,15 @@ function App() {
                       setNotice('请先保存或取消当前事件。');
                       return;
                     }
-                    chooseScene(false);
                     setUploadOpen((v) => !v);
                   }}
                   aria-expanded={uploadOpen}
                 >
+                  <Settings2 size={14} aria-hidden="true" />
                   地图设置
                 </button>
-                <span
-                  role="status"
-                  style={{
-                    marginLeft: 'auto',
-                    fontSize: 11,
-                    color: 'var(--ui-muted)',
-                    maxWidth: '36%',
-                    textAlign: 'right',
-                  }}
-                >
+                <span role="status" className="scene-sync-status">
+                  {sharedMap.phase === 'ready' && <CloudCheck size={14} aria-hidden="true" />}
                   {sharedMap.message}
                   {sharedMap.phase === 'error' && (
                     <button onClick={sharedMap.retry}>重试共享</button>
@@ -380,9 +297,7 @@ function App() {
                         </div>
                       }
                     >
-                      {demo ? (
-                        <DemoScene ref={scene} picking={picking} onPick={pick} />
-                      ) : map.restoring || map.restoreError ? (
+                      {map.restoring || map.restoreError ? (
                         <div className="workspace-loading">
                           {map.restoring ? (
                             '正在恢复实景设置…'
@@ -474,12 +389,11 @@ function App() {
                 demo={demo}
                 modelId={modelId}
                 tab={panelTab}
-                onTab={(value) => {
+                onTab={() => {
                   if (draft) {
                     setNotice('请先保存或取消当前事件。');
                     return;
                   }
-                  setTab(value);
                   setPanelOpen(true);
                 }}
                 onClose={() => {
@@ -516,14 +430,13 @@ function App() {
           <GovernanceTerminal
             key={modelId}
             modelId={modelId}
-            modelName={demo ? '青禾村 Demo' : map.activeName}
+            modelName={map.activeName}
             demo={demo}
             onOpenWorkspace={() => navigate('/')}
             onOpenIssue={(id) => {
               s.selectBuilding(null);
               s.setCurrentRenovation(null);
               s.selectIssue(id);
-              setTab('issues');
               setPanelOpen(true);
               if (!s.showIssues) s.toggleIssues();
               navigate('/');

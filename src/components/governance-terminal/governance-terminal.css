@@ -61,7 +61,7 @@
 .gt-page-inner {
   max-width: 1512px;
   margin: 0 auto;
-  padding: 29px 34px 38px;
+  padding: 32px 32px 40px;
 }
 .gt-page-heading {
   display: flex;
@@ -71,7 +71,7 @@
   margin-bottom: 24px;
 }
 .gt-page-heading h1 {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 650;
   line-height: 1.4;
   letter-spacing: -0.025em;
@@ -184,8 +184,8 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   border-block: 1px solid var(--ui-line, #d4ddd2);
-  padding: 19px 0 20px;
-  margin-bottom: 26px;
+  padding: 20px 0 22px;
+  margin-bottom: 28px;
 }
 .gt-fact-strip > div {
   padding-inline: 25px;
@@ -200,11 +200,11 @@
 }
 .gt-fact-strip dt {
   color: var(--ui-muted, #56685a);
-  font-size: 12px;
+  font-size: 13px;
 }
 .gt-fact-strip dd {
   margin-top: 5px;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 600;
   line-height: 1.35;
   font-variant-numeric: tabular-nums;
@@ -276,12 +276,12 @@
   display: grid;
   grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
   border: 1px solid var(--ui-line, #d4ddd2);
-  border-radius: 13px;
+  border-radius: 14px;
   background: var(--ui-surface, #f9faf7);
   overflow: hidden;
 }
 .gt-records {
-  padding: 23px 24px 17px;
+  padding: 26px 26px 20px;
   min-width: 0;
 }
 .gt-section-heading {
@@ -292,7 +292,7 @@
 }
 .gt-section-heading h2,
 .gt-distribution h2 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 650;
   line-height: 1.5;
   letter-spacing: -0.01em;
@@ -385,7 +385,7 @@
   min-width: 0;
 }
 .gt-record h3 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 1.7;
   overflow-wrap: anywhere;
@@ -396,7 +396,7 @@
   gap: 3px 10px;
   margin-top: 5px;
   color: var(--ui-muted, #56685a);
-  font-size: 11px;
+  font-size: 12px;
 }
 .gt-status {
   flex-shrink: 0;
@@ -441,6 +441,8 @@
 .gt-record-report {
   margin-top: 13px;
   color: var(--ui-ink, #233c30);
+  font-size: 14px;
+  line-height: 1.95;
 }
 .gt-record-placeholder {
   margin-top: 13px;
@@ -526,7 +528,7 @@
 .gt-record-attribution,
 .gt-records-footnote {
   color: var(--ui-muted, #56685a);
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.8;
 }
 .gt-record-attribution {
@@ -618,7 +620,7 @@
   border-bottom: 1px solid var(--ui-line, #d4ddd2);
 }
 .gt-document-title h3 {
-  font-size: 21px;
+  font-size: 24px;
   line-height: 1.7;
   font-weight: 600;
   letter-spacing: 0.015em;

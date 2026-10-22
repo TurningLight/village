@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import type { GeoJSONSource, ImageSource, Map as GLMap, Popup } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -6,6 +6,7 @@ import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 maplibregl.setWorkerUrl(workerUrl);
 maplibregl.setWorkerCount(2);
 import { useAppStore } from '../../store/useAppStore';
+import { useShallow } from 'zustand/react/shallow';
 import { useDesktopMarkerStore } from '../../store/useDesktopMarkerStore';
 import { desktopIssueMarkerVisible } from '../../lib/desktopIssueMarkers';
 import { spatialGeoJSON, geoPair } from '../../lib/spatial';
@@ -19,7 +20,7 @@ import { projectionLocalPoint } from '../../lib/projectionMath';
 import { issueOnProjection } from '../../lib/projectionCoordinates';
 import { Maximize2, RefreshCw, LoaderCircle } from 'lucide-react';
 
-export default function VillageMap({
+function VillageMap({
   modelId,
   demo,
   mini = false,
@@ -48,7 +49,20 @@ export default function VillageMap({
     showBuildings,
     showIssues,
     layers,
-  } = useAppStore();
+  } = useAppStore(
+    useShallow((state) => ({
+      village: state.village,
+      selectedBuildingId: state.selectedBuildingId,
+      selectedIssueId: state.selectedIssueId,
+      currentRenovationId: state.currentRenovationId,
+      selectionRevision: state.selectionRevision,
+      filterCategory: state.filterCategory,
+      filterStatus: state.filterStatus,
+      showBuildings: state.showBuildings,
+      showIssues: state.showIssues,
+      layers: state.layers,
+    })),
+  );
   const acknowledged = useDesktopMarkerStore((state) => state.acknowledged);
   const shapes = useMemo(() => spatialGeoJSON(), []);
   const issues = useMemo(
@@ -523,3 +537,5 @@ export default function VillageMap({
     </section>
   );
 }
+
+export default memo(VillageMap);

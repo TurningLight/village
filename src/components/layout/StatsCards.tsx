@@ -1,7 +1,46 @@
-import { Building2, AlertCircle, Clock, CheckCircle, ListTodo } from 'lucide-react';
+import { AlarmClock, AlertCircle, Clock, CheckCircle, ListTodo } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BAGUA_MODEL_ID, DEMO_MODEL_ID, filteredIssues, issuesForModel } from '../../lib/issues';
+
+const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Shanghai',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+const timeFormatter = new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Shanghai',
+  hourCycle: 'h23',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+});
+
+function DateTimeCard() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="stat-card stat-clock" title="北京时间">
+      <div className="stat-content">
+        <div>
+          <p className="text-sm text-gray-600 mb-1">{dateFormatter.format(now)}</p>
+          <p className="stat-value">
+            <time dateTime={now.toISOString()}>{timeFormatter.format(now)}</time>
+          </p>
+        </div>
+        <div className="stat-icon" aria-hidden="true">
+          <AlarmClock size={21} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function StatsCards({ modelId = BAGUA_MODEL_ID }: { modelId?: string }) {
   const village = useAppStore((state) => state.village);
@@ -11,7 +50,6 @@ export default function StatsCards({ modelId = BAGUA_MODEL_ID }: { modelId?: str
   const stats = useMemo(() => {
     if (!village) {
       return {
-        buildingCount: 0,
         totalIssues: 0,
         pendingIssues: 0,
         processingIssues: 0,
@@ -21,7 +59,6 @@ export default function StatsCards({ modelId = BAGUA_MODEL_ID }: { modelId?: str
 
     const issues = filteredIssues(issuesForModel(village.issues, modelId), category, status);
     return {
-      buildingCount: modelId === DEMO_MODEL_ID ? village.buildings.length : '—',
       totalIssues: issues.length,
       pendingIssues: issues.filter((i) => i.status === 'pending').length,
       processingIssues: issues.filter((i) => i.status === 'processing').length,
@@ -30,13 +67,6 @@ export default function StatsCards({ modelId = BAGUA_MODEL_ID }: { modelId?: str
   }, [village, modelId, category, status]);
 
   const cards = [
-    {
-      title: modelId === DEMO_MODEL_ID ? '村庄建筑' : '模型建筑',
-      value: stats.buildingCount,
-      icon: Building2,
-      color: 'bg-blue-500',
-      textColor: 'text-blue-600',
-    },
     {
       title: '问题总数',
       value: stats.totalIssues,
@@ -79,6 +109,7 @@ export default function StatsCards({ modelId = BAGUA_MODEL_ID }: { modelId?: str
             : '事件仅统计当前模型；实景网格不自动识别建筑数量'
       }
     >
+      <DateTimeCard />
       {cards.map((card) => {
         const Icon = card.icon;
         return (

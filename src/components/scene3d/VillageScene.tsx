@@ -552,7 +552,7 @@ const VillageScene = forwardRef<
           />
         )}
         {phase === 'ready' && showBuildings && (
-          <div className="bagua-marker-layer" aria-label="模拟治理问题与微更新方案">
+          <div className="bagua-marker-layer" aria-label="治理事件标记">
             {markers.map((marker, index) => {
               const selected =
                 marker.kind === 'issue'

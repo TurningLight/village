@@ -1,21 +1,21 @@
 ---
-name: 乡居共治
+name: 乡见
 description: 森林绿乡村治理工作区与村民日常上报界面
 colors:
-  web-canvas: "#e0e8e0"
-  web-surface: "#f9faf7"
+  web-canvas: "#e7ede5"
+  web-surface: "#fcfdf9"
   web-surface-soft: "#f0f3ed"
-  web-line: "#d4ddd2"
+  web-line: "#dbe2d7"
   web-ink: "#233c30"
-  web-muted: "#56685a"
+  web-muted: "#526456"
   web-accent: "#315e47"
   mobile-primary: "#173b32"
   mobile-button: "#214c39"
-  mobile-canvas: "#f8faf5"
+  mobile-canvas: "#f6f8f1"
   mobile-surface: "#ffffff"
   mobile-ink: "#243b32"
-  mobile-muted: "#647269"
-  mobile-line: "#e6eae3"
+  mobile-muted: "#52665a"
+  mobile-line: "#dde5da"
   mobile-voice-surface: "#eef4e6"
   mobile-pending: "#94522f"
   mobile-pending-surface: "#f8ede5"
@@ -74,7 +74,7 @@ components:
     padding: "2px 7px"
 ---
 
-# Design System: 乡居共治
+# Design System: 乡见
 
 ## Overview
 
@@ -199,3 +199,12 @@ components:
 - **Don't** 只用颜色表达问题状态。
 - **Don't** 将实景模型投影呈现为已核实的 GPS 或测绘定位，也不要将旧村庄底图套在新村庄名称下。
 - **Don't** 用手机新规则覆盖桌面工作区及夜间场景的既有样式。
+
+
+## 乡见界面精修（2026-10-22）
+
+本次保持森林绿品牌和业务流程，沿用已移除演示村切换、微更新与管理员头像后的界面。桌面顶栏 72px，品牌 24px；工具栏使用 40px 高操作按钮，深绿只强调新增事件。地图容器与事件面板采用 14px 圆角、细线边界和 12px 间距，不给列表条目加阴影。事件标题 14px、辅助文字 12px，详情正文 13px；窄屏保留侧面板和原有地图分屏行为。日夜主题继续使用同一组语义变量。
+
+村民端首页标题 28px、1.55 行高，小于 375px 时用 24px；实景地图入口与欢迎语并排，缩略图使用 contain 保留完整影像。上报主入口保持深绿，办理统计和动态列表紧接主入口。首页介绍压缩为一句，语音提示保留。进度筛选使用浅绿底、白色选中项，地图与列表切换同时显示图标和文字。个人资料和记录采用白色细边框表面。底部四项导航使用固定 48×30px 图标容器，避免选中切换引起位移。筛选、表单分类和关闭按钮的触控高度至少 44px；输入维持 16px。上报字段、状态语义和草稿机制保持不变。治理终端只调整标题层级、边距及档案正文可读性。
+
+React 优化限定为 App / VillageMap 的 Zustand 精确订阅、地图 memo，以及手机事件筛选和首页统计的 memo。地图和治理终端继续按现有方式延迟加载，不改变 API、存储或业务动作。

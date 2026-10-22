@@ -72,7 +72,7 @@ async function api(t, { env = {}, fetchImpl } = {}) {
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   t.after(async () => {
     await new Promise((resolve) => server.close(resolve));
-    await rm(dir, { recursive: true, force: true });
+    await rm(dir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
   });
   return { url: `http://127.0.0.1:${server.address().port}`, file };
 }

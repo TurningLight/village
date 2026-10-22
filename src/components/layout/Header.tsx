@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   Leaf,
-  Calendar,
   Activity,
   Check,
   ChevronDown,
@@ -37,15 +36,6 @@ export default function Header({
   page?: DesktopPage;
   onPageChange?: (page: DesktopPage) => void;
 }) {
-  const [currentDate] = useState(() =>
-    new Date().toLocaleDateString('zh-CN', {
-      timeZone: 'Asia/Shanghai',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-    }),
-  );
   const [open, setOpen] = useState(false);
   const root = useRef<HTMLDivElement>(null),
     trigger = useRef<HTMLButtonElement>(null),
@@ -138,7 +128,7 @@ export default function Header({
           </div>
           <div className="header-brand-copy">
             <div className="header-title-line">
-              <h1 className="brand-title">乡居共治</h1>
+              <h1 className="brand-title">乡见</h1>
               <span className="header-page-name">
                 {page === 'governance' ? '智慧治理终端' : '事件处理工作台'}
               </span>
@@ -151,16 +141,9 @@ export default function Header({
           </div>
         </div>
         <div className="header-meta">
-          <div className="header-date">
-            <Calendar size={16} />
-            <span className="text-sm font-medium">{currentDate}</span>
-          </div>
           <div className="header-status">
             <Activity size={16} className="text-green-500" />
             <span className="text-sm font-medium">运行中</span>
-          </div>
-          <div className="header-avatar" aria-label="本机管理员">
-            管
           </div>
         </div>
       </div>

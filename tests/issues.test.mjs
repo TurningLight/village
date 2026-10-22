@@ -40,7 +40,7 @@ function loadApp(storage = new Map(), failWrites = false) {
       if (!path.extname(target)) target += fs.existsSync(target + '.tsx') ? '.tsx' : '.ts';
       // SSR uses the real current store state instead of Zustand's frozen
       // getInitialState snapshot; no UI event is simulated by a browser.
-      if (store && target.endsWith('/store/useAppStore.ts')) return { useAppStore: (selector) => selector(store.getState()) };
+      if (store && target === path.resolve(root, 'src/store/useAppStore.ts')) return { useAppStore: (selector) => selector(store.getState()) };
       return load(target);
     };
     vm.runInNewContext(output, {

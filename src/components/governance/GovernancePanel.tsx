@@ -11,7 +11,6 @@ import {
   LocateFixed,
   MapPin,
   Plus,
-  Wrench,
   X,
 } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
@@ -55,7 +54,6 @@ export default function GovernancePanel({
     rows = filteredIssues(all, s.filterCategory, s.filterStatus);
   const selected = all.find((i) => i.id === s.selectedIssueId),
     building = demo ? s.village?.buildings.find((b) => b.id === s.selectedBuildingId) : null;
-  const plan = demo ? s.village?.renovations.find((p) => p.id === s.currentRenovationId) : null;
   const changeStatus = (status: IssueStatus) => {
     if (!selected) return;
     try {
@@ -80,11 +78,6 @@ export default function GovernancePanel({
       setError(cause instanceof Error ? cause.message : '保存失败，请重试。');
     }
   };
-  const choosePlan = (id: string) => {
-    if (!s.showRenovations) s.toggleRenovations();
-    if (!s.layers.facilities) s.toggleLayer('facilities');
-    s.setCurrentRenovation(id);
-  };
   return (
     <aside className="governance-panel" aria-label="治理工作面板">
       <div className="panel-tabs">
@@ -97,17 +90,6 @@ export default function GovernancePanel({
         >
           <ClipboardList size={16} />
           治理事件
-        </button>
-        <button
-          className={tab === 'plans' ? 'active' : ''}
-          onClick={() => {
-            onTab('plans');
-            s.selectIssue(null);
-            s.selectBuilding(null);
-          }}
-        >
-          <Wrench size={16} />
-          微更新
         </button>
         <button aria-label="收起信息面板" className="panel-hide" onClick={onClose}>
           <X size={17} />
@@ -187,80 +169,6 @@ export default function GovernancePanel({
                   i.location.local.z - building.location.local.z,
                 ) < 15,
             ) && <p className="empty-note">附近暂无事件</p>}
-          </>
-        ) : tab === 'plans' ? (
-          <>
-            <div className="panel-heading">
-              <h2>小更新，让村庄更宜居</h2>
-              <p>选择方案，在三维场景中对比改造效果。</p>
-            </div>
-            {!demo ? (
-              <div className="panel-empty">
-                <Wrench size={28} />
-                <h3>请切换至青禾村 Demo</h3>
-                <p>实景模型未分割设施对象，预设改造在青禾村中展示。</p>
-              </div>
-            ) : (
-              <>
-                <div className="plan-list">
-                  {s.village?.renovations.map((p, i) => (
-                    <button
-                      key={p.id}
-                      className={`plan-row ${plan?.id === p.id ? 'active' : ''}`}
-                      onClick={() => choosePlan(p.id)}
-                    >
-                      <span className="plan-letter">{String.fromCharCode(65 + i)}</span>
-                      <span>
-                        <strong>{p.name}</strong>
-                        <small>{p.targetArea}</small>
-                      </span>
-                      <ChevronRight size={16} />
-                    </button>
-                  ))}
-                </div>
-                {plan ? (
-                  <div className="plan-detail">
-                    <h3>{plan.name}</h3>
-                    <p>{plan.description}</p>
-                    <div className="compare-switch" role="group" aria-label="改造效果对比">
-                      <button
-                        className={s.renovationMode === 'before' ? 'active' : ''}
-                        aria-pressed={s.renovationMode === 'before'}
-                        onClick={() => s.setRenovationMode('before')}
-                      >
-                        改造前
-                      </button>
-                      <button
-                        className={s.renovationMode === 'after' ? 'active' : ''}
-                        aria-pressed={s.renovationMode === 'after'}
-                        onClick={() => s.setRenovationMode('after')}
-                      >
-                        改造后
-                      </button>
-                    </div>
-                    <div className="effect-description">
-                      <strong>{s.renovationMode === 'before' ? '现状问题' : '预期效果'}</strong>
-                      <p>{s.renovationMode === 'before' ? plan.beforeState : plan.afterState}</p>
-                    </div>
-                    {plan.id === 'renovation-001' && (
-                      <button
-                        className="secondary-action"
-                        onClick={() => s.setTimeMode(s.timeMode === 'night' ? 'day' : 'night')}
-                      >
-                        {s.timeMode === 'night' ? '切回日间' : '切换夜间查看照明'}
-                      </button>
-                    )}
-                    <button className="text-button" onClick={s.focusSelection}>
-                      <LocateFixed size={15} />
-                      重新定位方案区域
-                    </button>
-                    <p className="panel-help">方案为效果预览。事件办理状态需要单独更新。</p>
-                  </div>
-                ) : (
-                  <p className="empty-note">选择一个方案开始对比</p>
-                )}
-              </>
-            )}
           </>
         ) : selected ? (
           <>

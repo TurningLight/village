@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore, useEffect, useRef } from 'react';
+import { useMemo, useState, useSyncExternalStore, useEffect, useRef } from 'react';
 import { Link, NavLink, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   Leaf,
@@ -35,7 +35,10 @@ export default function MobileApp() {
       reload,
     } = useResidentIssues(villageMap.map?.modelId || '__waiting_real_map__'),
     location = useLocation();
-  const issues = issuesForModel(listedIssues, villageMap.map?.modelId || '__waiting_real_map__');
+  const issues = useMemo(
+    () => issuesForModel(listedIssues, villageMap.map?.modelId || '__waiting_real_map__'),
+    [listedIssues, villageMap.map?.modelId],
+  );
   const reporting = location.pathname === '/mobile/report',
     detail = location.pathname.includes('/issues/'),
     success = location.pathname.includes('/success/');
@@ -52,11 +55,11 @@ export default function MobileApp() {
   return (
     <div className="mobile-app">
       <header className="m-header">
-        <Link to="/mobile" className="m-brand" aria-label="乡居共治首页">
+        <Link to="/mobile" className="m-brand" aria-label="乡见首页">
           <span>
             <Leaf size={23} />
           </span>
-          <strong>乡居共治</strong>
+          <strong>乡见</strong>
         </Link>
         <span className="m-village-label m-current-real-village">
           <MapPin size={14} />
@@ -139,7 +142,9 @@ export default function MobileApp() {
       {!detail && !success && villageMap.map && (
         <nav className="m-bottom-nav" aria-label="村民端导航">
           <NavLink end to="/mobile">
-            <House size={22} />
+            <span className="m-nav-icon">
+              <House size={22} />
+            </span>
             <span>首页</span>
           </NavLink>
           <NavLink to="/mobile/report" className="m-nav-report">
@@ -149,11 +154,15 @@ export default function MobileApp() {
             <span>随手报</span>
           </NavLink>
           <NavLink to="/mobile/progress">
-            <ClipboardCheck size={22} />
+            <span className="m-nav-icon">
+              <ClipboardCheck size={22} />
+            </span>
             <span>进度</span>
           </NavLink>
           <NavLink to="/mobile/me">
-            <UserRound size={22} />
+            <span className="m-nav-icon">
+              <UserRound size={22} />
+            </span>
             <span>我的</span>
           </NavLink>
         </nav>

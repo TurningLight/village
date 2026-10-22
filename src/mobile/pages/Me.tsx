@@ -99,7 +99,7 @@ export default function Me({
           <br />
           就是建设家乡的大事。
         </p>
-        <span>乡居共治 · 村民端</span>
+        <span>乡见 · 村民端</span>
       </div>
       <dialog
         ref={dialog}
@@ -111,11 +111,7 @@ export default function Me({
       >
         <div className="m-dialog-heading">
           <h2>
-            {panel === 'profile'
-              ? '怎么称呼你'
-              : panel === 'help'
-                ? '把问题交给村里'
-                : '关于乡居共治'}
+            {panel === 'profile' ? '怎么称呼你' : panel === 'help' ? '把问题交给村里' : '关于乡见'}
           </h2>
           <button className="m-icon-button" aria-label="关闭" onClick={() => setPanel(null)}>
             <X size={20} />
@@ -175,7 +171,7 @@ export default function Me({
           </div>
         ) : (
           <div className="m-prose">
-            <p>乡居共治，让每位村民都能参与家门口的环境治理。</p>
+            <p>乡见，让每位村民都能参与家门口的环境治理。</p>
             <p>
               村庄底图由电脑管理端共享，自动跟随真实村庄的3D模型更新。上报和照片保存在本地服务，与管理端同步。草稿按村庄分别保存在当前浏览器；当前还没有正式账号。
             </p>

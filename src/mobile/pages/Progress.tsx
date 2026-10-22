@@ -38,11 +38,12 @@ export default function Progress({
           <p>{mine ? '你关心的事，一路跟进。' : '村里的事，进展看得见。'}</p>
         </div>
         <button
-          className="m-icon-button"
+          className="m-view-toggle"
           aria-label={map ? '切换为列表' : '切换为地图'}
           onClick={() => setMap(!map)}
         >
           {map ? <AlignLeft size={21} /> : <MapPin size={21} />}
+          <span>{map ? '列表' : '地图'}</span>
         </button>
       </div>
       <div className="m-search">

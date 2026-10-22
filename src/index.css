@@ -32,12 +32,12 @@ body {
 
 .village-app {
   /* Shared chrome palette; the scan and its issue-status colors stay intact. */
-  --ui-canvas: #e0e8e0;
-  --ui-surface: #f9faf7;
+  --ui-canvas: #e7ede5;
+  --ui-surface: #fcfdf9;
   --ui-surface-soft: #f0f3ed;
-  --ui-line: #d4ddd2;
+  --ui-line: #dbe2d7;
   --ui-ink: #233c30;
-  --ui-muted: #56685a;
+  --ui-muted: #526456;
   --ui-accent: #315e47;
   --ui-selected: #e2ecdf;
   --ui-selected-border: #8da58e;
