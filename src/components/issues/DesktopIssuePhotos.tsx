@@ -43,7 +43,6 @@ export default function DesktopIssuePhotos({
   const { pathname } = useLocation();
   useEffect(() => {
     dialog.current?.close();
-    setActive(null);
   }, [pathname]);
   const close = () => {
     dialog.current?.close();
@@ -83,6 +82,7 @@ export default function DesktopIssuePhotos({
         ref={dialog}
         className="issue-photo-viewer"
         aria-label={`${title}的现场照片预览`}
+        onClose={() => setActive(null)}
         onCancel={(event) => {
           event.preventDefault();
           close();

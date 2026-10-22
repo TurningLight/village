@@ -103,8 +103,12 @@ export default function VillageMap({
   useEffect(() => {
     let disposed = false,
       m: GLMap;
-    setReady(false);
-    setFailed(false);
+    queueMicrotask(() => {
+      if (!disposed) {
+        setReady(false);
+        setFailed(false);
+      }
+    });
     try {
       m = new maplibregl.Map({
         container: container.current,

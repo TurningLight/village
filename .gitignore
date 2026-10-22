@@ -11,6 +11,13 @@ node_modules/
 dist/
 dist-ssr/
 *.local
+*.local.json
+
+# Local requirement material; do not publish with the application
+/需求/
+
+# Generated local review screenshots/reports may contain resident photos or debug data
+/.impeccable/review/
 
 # Codex / Claude local configuration, credentials, and session data
 .codex/
@@ -24,11 +31,36 @@ CLAUDE.local.md
 # Environment variables and secrets (keep safe templates versioned)
 .env
 .env.*
+*.env
+*.env.*
+.envrc
+.envrc.*
 !.env.example
 !.env.sample
 !.env.template
 *.pem
 *.key
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+.ssh/
+.aws/
+.npmrc
+.netrc
+.pypirc
+.secrets/
+/secrets/
+secrets.json
+secrets.yaml
+secrets.yml
+credentials.json
+service-account*.json
 
 # Build caches and test reports
 .vite/
@@ -62,3 +94,7 @@ Desktop.ini
 # Shared local API demo records
 .local-data/
 .certs/
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm

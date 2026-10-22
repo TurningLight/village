@@ -41,9 +41,9 @@ const GovernanceTerminal = lazy(
 );
 function readScenePreference() {
   try {
-    return localStorage.getItem('village-scene-mode') !== 'real';
+    return localStorage.getItem('village-scene-mode') === 'demo';
   } catch {
-    return true;
+    return false;
   }
 }
 /** Do not load a hidden 3D viewer when opening an already saved 2D map.

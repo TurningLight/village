@@ -8,6 +8,7 @@ import { webcrypto } from 'node:crypto';
 import ts from 'typescript';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { MemoryRouter } from 'react-router-dom';
 import { tmpdir } from 'node:os';
 import { createIssueService } from '../server/issues.mjs';
 import { loadApp as loadSharedApp } from './helpers/appHarness.mjs';
@@ -33,6 +34,7 @@ function loadApp(storage = new Map(), failWrites = false) {
       fileName: file,
     }).outputText;
     const localRequire = (name) => {
+      if (name.endsWith('.css')) return {};
       if (!name.startsWith('.')) return require(name);
       let target = path.resolve(path.dirname(file), name);
       if (!path.extname(target)) target += fs.existsSync(target + '.tsx') ? '.tsx' : '.ts';
@@ -224,13 +226,29 @@ test('form and event detail render labeled fields and completion control; comple
   assert(form.includes('id="issue-title"'));
   assert(form.includes('加入待办'));
   const issue = app.store.getState().addIssue(issueInput());
-  const detail = renderToStaticMarkup(React.createElement(Panel, props));
+  const detail = renderToStaticMarkup(React.createElement(MemoryRouter, null, React.createElement(Panel, props)));
   assert(detail.includes('确认办结'));
   assert(detail.includes('巷道排水疏通'));
   app.store.getState().updateIssueStatus(issue.id, 'completed', '完成');
   const list = renderToStaticMarkup(React.createElement(Panel, props));
   assert(!list.includes('巷道排水疏通'));
   assert(!list.includes('确认办结'));
+});
+
+test('desktop event details expose all synchronized photos and omit the gallery for records without photos', () => {
+  const app = loadApp();
+  const Panel = app.load('src/components/issues/IssuePanel.tsx').default;
+  const photos = ['data:image/jpeg;base64,cGhvdG8tMQ==', 'data:image/png;base64,cGhvdG8tMg=='];
+  app.store.getState().addIssue({ ...issueInput(), images: photos });
+  const render = () => renderToStaticMarkup(React.createElement(MemoryRouter, null,
+    React.createElement(Panel, { draft: null })));
+  const detail = render();
+  for (const src of photos) assert(detail.includes(src), 'the saved photo reaches the rendered detail');
+  assert(detail.includes('查看第 1 张现场照片'));
+  assert(detail.includes('查看第 2 张现场照片'));
+  assert(detail.includes('关闭照片预览'));
+  app.store.getState().addIssue(issueInput());
+  assert(!render().includes('上报现场照片'), 'an empty record does not show a broken or placeholder photo');
 });
 
 function pickingHarness(app, onHit = () => {}) {
