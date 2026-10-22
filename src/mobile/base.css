@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  overflow: hidden;
+  background: #eaf0e5;
+  font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  color: #243b32;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+svg {
+  vertical-align: middle;
+  flex-shrink: 0;
+}

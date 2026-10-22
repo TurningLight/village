@@ -1,0 +1,11 @@
+Local model decoder assets
+
+Source: the project's installed three package, examples/jsm/libs/.
+Three.js license: three-LICENSE.txt (MIT).
+Draco decoder: https://github.com/google/draco (Apache-2.0).
+Basis Universal transcoder: https://github.com/BinomialLLC/basis_universal (Apache-2.0).
+Apache-2.0 license: Apache-2.0-LICENSE.txt.
+
+These files are served locally so Draco-compressed meshes and KTX2 textures
+do not require a third-party CDN. Meshopt and ZIP utilities are bundled from
+the installed Three.js addons. Uploaded models retain their own licenses.

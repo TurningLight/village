@@ -1,0 +1,64 @@
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Codex / Claude local configuration, credentials, and session data
+.codex/
+.claude/
+.claude.json
+.claude.json.*
+AGENTS.local.md
+CLAUDE.local.md
+.mcp.json
+
+# Environment variables and secrets (keep safe templates versioned)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+
+# Build caches and test reports
+.vite/
+.cache/
+*.tsbuildinfo
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Shared local API demo records
+.local-data/
+.certs/

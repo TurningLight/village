@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T17:14:51.948144+00:00",
+  "title": "Design System: 乡居共治",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "web-floating",
+        "value": "0 4px 14px rgb(27 47 33 / 9%)",
+        "purpose": "桌面浮层，沿用 --ui-floating-shadow。"
+      },
+      {
+        "name": "mobile-shell",
+        "value": "0 8px 60px #153b3210",
+        "purpose": "宽屏居中手机应用壳。"
+      },
+      {
+        "name": "mobile-dialog",
+        "value": "0 12px 40px #132f2330",
+        "purpose": "手机居中弹窗。"
+      },
+      {
+        "name": "mobile-entry",
+        "value": "0 8px 18px #173b3212",
+        "purpose": "首页上报主入口。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "button-background",
+        "value": "background 0.15s",
+        "purpose": "主按钮按下反馈。"
+      },
+      {
+        "name": "processing-spin",
+        "value": "0.9s linear infinite",
+        "purpose": "转写和整理等待；减少动画时停用。"
+      },
+      {
+        "name": "recording-level",
+        "value": "0.8s ease-in-out infinite alternate",
+        "purpose": "录音状态条反馈；并非音量测量。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-narrow",
+        "value": "359px"
+      },
+      {
+        "name": "shell-frame",
+        "value": "700px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "主按钮",
+      "kind": "button",
+      "description": "提交和确认操作。",
+      "html": "<button class=\"ds-button\">确认提交</button>",
+      "css": ".ds-button{border:0;border-radius:12px;background:#214c39;color:#fff;padding:13px 20px;min-height:49px;font:600 15px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif;transition:background .15s}.ds-button:hover{cursor:pointer}.ds-button:active{background:#37694b}.ds-button:focus-visible{outline:3px solid #91bf9d;outline-offset:3px}.ds-button:disabled{opacity:.48;cursor:not-allowed}",
+      "refersTo": "mobile-button-primary"
+    },
+    {
+      "name": "文字按钮",
+      "kind": "button",
+      "description": "返回、取消和次要操作。",
+      "html": "<button class=\"ds-text-button\">返回办理进度</button>",
+      "css": ".ds-text-button{border:0;background:none;color:#365c42;min-height:40px;padding:5px 0;font:13px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-text-button:hover{cursor:pointer}.ds-text-button:focus-visible{outline:3px solid #91bf9d;outline-offset:3px}"
+    },
+    {
+      "name": "输入框",
+      "kind": "input",
+      "description": "上报字段，输入字号统一16px。",
+      "html": "<label class=\"ds-label\">问题标题<input class=\"ds-input\" placeholder=\"简单说说发生了什么\" /></label>",
+      "css": ".ds-label{display:block;color:#243b32;font:600 15px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-input{display:block;width:100%;margin-top:10px;border:1px solid #dde5d5;border-radius:11px;background:#fcfdf9;padding:12px;color:#243b32;font:16px/1.7 \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-input:focus{border-color:#669562;background:#fff}.ds-input:focus-visible{outline:3px solid #91bf9d;outline-offset:3px}",
+      "refersTo": "mobile-input"
+    },
+    {
+      "name": "事件状态",
+      "kind": "chip",
+      "description": "颜色与文字共同表达办理进度。",
+      "html": "<span class=\"ds-status\">待受理</span> <span class=\"ds-status ds-processing\">处理中</span> <span class=\"ds-status ds-completed\">已办结</span>",
+      "css": ".ds-status{display:inline-flex;align-items:center;border-radius:5px;padding:2px 7px;background:#f8ede5;color:#94522f;font:550 12px/1.6 \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-processing{background:#f6f0de;color:#7b601f}.ds-completed{background:#e8f3e9;color:#326847}",
+      "refersTo": "mobile-status-pending"
+    },
+    {
+      "name": "事件列表容器",
+      "kind": "card",
+      "description": "白色平面容器及内部细分隔。",
+      "html": "<div class=\"ds-card\"><div class=\"ds-row\">东侧桥头路灯不亮</div><div class=\"ds-row\">河边步道需要清理</div></div>",
+      "css": ".ds-card{background:#fff;border-radius:16px;padding:0 14px;color:#243b32;font:600 16px/1.5 \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-row{padding:18px 0;border-bottom:1px solid #edf0e9}.ds-row:last-child{border-bottom:0}",
+      "refersTo": "mobile-card"
+    },
+    {
+      "name": "底部导航",
+      "kind": "nav",
+      "description": "四项固定导航，以文字和图标传达目的。",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-active\" href=\"#home\"><svg width=\"21\" height=\"21\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"m3 9 9-7 9 7v11a1 1 0 0 1-1 1h-5v-8H9v8H4a1 1 0 0 1-1-1Z\"/></svg>首页</a><a href=\"#report\">随手报</a><a href=\"#progress\">进度</a><a href=\"#me\">我的</a></nav>",
+      "css": ".ds-nav{display:grid;grid-template-columns:repeat(4,1fr);padding:9px 12px 8px;background:#fff;border-top:1px solid #e8ede2;min-height:72px}.ds-nav a{display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;min-height:48px;color:#5f705c;text-decoration:none;font:12px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-nav .ds-active{color:#173b32;font-weight:650}.ds-nav a:focus-visible{outline:3px solid #91bf9d;outline-offset:3px}"
+    },
+    {
+      "name": "按住录音",
+      "kind": "custom",
+      "description": "语音辅助区与取消状态。",
+      "html": "<section class=\"ds-voice\"><strong>不方便打字？说一说</strong><p>说清楚在哪里、发生了什么，帮你整理成文字。</p><button class=\"ds-hold\">按住说话</button></section>",
+      "css": ".ds-voice{padding:16px;border-radius:16px;background:#eef4e6;color:#243b32;font:14px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif}.ds-voice p{font-size:12px;color:#677c58;margin:7px 0 13px;line-height:1.8}.ds-hold{width:100%;min-height:54px;border:0;border-radius:11px;background:#315c40;color:#fff;font:600 15px \"PingFang SC\",\"Microsoft YaHei\",system-ui,sans-serif;touch-action:none;user-select:none}.ds-hold:hover{cursor:pointer}.ds-hold:focus-visible{outline:3px solid #91bf9d;outline-offset:3px}.ds-hold.ds-will-cancel{background:#9a5142}"
+    }
+  ],
+  "narrative": {
+    "northStar": "乡居共治",
+    "overview": "沿用现有森林绿界面与浅绿白表面。桌面主要色彩来自 `src/index.css` 的 `--ui-*` 变量；手机使用独立的 `src/mobile/base.css` 与 `mobile.css`，延续既有品牌，不替换桌面视觉系统。正文使用系统中文无衬线字体，图标统一 Lucide。\n\n桌面工作区是 Operate 模式：紧凑顶部品牌与统计条，场景工具栏，主要空间视窗，右侧可收起业务面板。大部分首屏面积留给3D。手机为村民日常任务提供单列列表、明确主动作与受保护焦点的表单。",
+    "keyCharacteristics": [
+      "森林绿主动作与浅绿白表面。",
+      "中文可读性优先，状态同时使用颜色、文字和图标。",
+      "桌面空间工作区与手机单列任务界面分别适配。"
+    ],
+    "rules": [
+      {
+        "name": "状态有文字",
+        "body": "状态颜色始终配合可读标签，不能只靠色相传达进展。",
+        "section": "colors"
+      },
+      {
+        "name": "输入可读",
+        "body": "手机输入保持（16px），不为容纳更多字段缩小输入文字。",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "**Do** 沿用森林绿、浅绿白和 Lucide 图标，保留桌面既有视觉系统。",
+      "**Do** 为状态、忙碌、错误、焦点与禁用提供明确的文字或交互反馈。",
+      "**Do** 保持手机输入文字（16px），导航辅助标签至少（12px）。",
+      "**Do** 为手机顶部、导航和提交栏保留安全区，并尊重减少动画偏好。"
+    ],
+    "donts": [
+      "**Don't** 只用颜色表达问题状态。",
+      "**Don't** 将手机示意地图呈现为真实GPS或测绘定位。",
+      "**Don't** 用手机新规则覆盖桌面工作区及夜间场景的既有样式。"
+    ]
+  }
+}

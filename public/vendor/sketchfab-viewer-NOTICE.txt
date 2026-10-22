@@ -1,0 +1,9 @@
+Sketchfab Viewer API 1.12.1
+Upstream: https://github.com/sketchfab/viewer-api
+Script: https://static.sketchfab.com/api/sketchfab-viewer-1.12.1.js
+Package: https://www.npmjs.com/package/@sketchfab/viewer-api
+Author: Sketchfab and the contributors listed in sketchfab-viewer-package.json.
+The official npm package declares the ISC license; its original package
+metadata is included alongside this notice. The distributed SDK is unmodified.
+The SDK license does not cover the village model. That model is authored by
+Old Media Art and is licensed separately under CC BY-NC 4.0.

@@ -1,0 +1,217 @@
+.m-projection-map {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  height: 100%;
+  background: #e9eeea;
+  border: 1px solid #d5ded7;
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.m-projection-viewport {
+  position: relative;
+  flex: 1;
+  min-height: 240px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  background: #dfe7e0;
+}
+.m-projection-viewport.is-picking {
+  cursor: crosshair;
+}
+.m-projection-image {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  transform-origin: center;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.m-projection-caption {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  max-width: calc(100% - 75px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid #dce4de;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.m-projection-caption span:first-child {
+  font-size: 12px;
+  color: #5b7666;
+}
+.m-projection-caption span:last-child {
+  font-size: 12px;
+  font-weight: 650;
+  color: #234a36;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.m-projection-controls {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #cfdbd1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.m-projection-controls button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  min-height: 44px;
+  color: #24553a;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid #e6ece7;
+  touch-action: manipulation;
+}
+.m-projection-controls button:last-child {
+  border-bottom: 0;
+}
+.m-projection-controls button:disabled {
+  color: #a7b7ab;
+}
+.m-projection-controls button:focus-visible,
+.m-projection-marker:focus-visible {
+  outline: 3px solid #307658;
+  outline-offset: -3px;
+}
+.m-projection-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  z-index: 2;
+  touch-action: manipulation;
+}
+.m-projection-marker span {
+  display: block;
+  width: 15px;
+  height: 15px;
+  background: #bf594d;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 6px #213f3955;
+}
+.m-projection-marker.processing span {
+  background: #c18a34;
+}
+.m-projection-marker.completed span {
+  background: #38815d;
+}
+.m-projection-picked {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  color: #1b5d3e;
+  filter: drop-shadow(0 2px 2px #ffffff);
+  pointer-events: none;
+  z-index: 3;
+  display: flex;
+}
+.m-projection-picked svg {
+  stroke: #fff;
+  stroke-width: 1.4;
+}
+.m-projection-picked i {
+  position: absolute;
+  bottom: 13px;
+  left: 12px;
+  width: 5px;
+  height: 5px;
+  background: #fff;
+  border-radius: 50%;
+}
+.m-projection-reticle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 2px #163923;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.m-projection-hint {
+  margin: 0;
+  padding: 10px 13px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #49604d;
+  background: #f4f6f1;
+  border-top: 1px solid #d8e1d9;
+  min-height: 36px;
+}
+.m-projection-state {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+  color: #3b5d46;
+  background: #e9eee4;
+}
+.m-projection-state strong {
+  font-size: 15px;
+  font-weight: 600;
+}
+.m-projection-state span {
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 250px;
+  color: #647969;
+}
+.m-projection-state button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  border: 0;
+  padding: 0 15px;
+  color: #fff;
+  background: #2e6346;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.m-projection-state .m-spin {
+  animation: m-projection-spin 1s linear infinite;
+}
+@keyframes m-projection-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .m-projection-state .m-spin {
+    animation: none;
+  }
+  .m-projection-image {
+    transition: none;
+  }
+}
